@@ -4,7 +4,9 @@ import { NextResponse } from "next/server";
 // Define your public routes here
 const isPublicRoute = createRouteMatcher([
   "/", 
-  "/api/webhooks/clerk", 
+  "/api/webhooks/clerk",
+  "/sign-in(.*)",
+  "/sign-up(.*)",
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
