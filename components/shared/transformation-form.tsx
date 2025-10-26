@@ -31,6 +31,7 @@ import {
 import { startTransition, useState, useTransition } from "react";
 import { AspectRatioKey, debounce, deepMergeObjects } from "@/lib/utils";
 import { updateCredits } from "@/lib/actions/user.actions";
+import MediaUploader from "./media-uploader";
 
 export const formSchema = z.object({
   title: z.string(),
@@ -55,7 +56,7 @@ const TransformationForm = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isTransforming, setIsTransforming] = useState(false);
   const [transformationConfig, setTransformationConfig] = useState(config);
-  const [isPending, startTransition] = useTransition()
+  const [isPending, startTransition] = useTransition();
 
   const initialValues =
     data && action === "Update"
@@ -124,7 +125,7 @@ const TransformationForm = ({
     setNewTransformation(null);
 
     startTransition(async () => {
-    //   await updateCredits(userId, creditFee);
+      //   await updateCredits(userId, creditFee);
     });
   };
 
@@ -155,10 +156,32 @@ const TransformationForm = ({
                 <SelectTrigger className="select-field">
                   <SelectValue placeholder="Select size" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="aspect-ratio-select-content">
                   {Object.keys(aspectRatioOptions).map((key) => (
-                    <SelectItem key={key} value={key} className="select-item">
-                      {aspectRatioOptions[key as AspectRatioKey].label}
+                    <SelectItem
+                      key={key}
+                      value={key}
+                      className="aspect-ratio-select-item"
+                    >
+                      <div className="aspect-ratio-option">
+                        <div className="aspect-ratio-preview">
+                          <div
+                            className={`aspect-ratio-box aspect-ratio-${key.replace(
+                              ":",
+                              "-"
+                            )}`}
+                          ></div>
+                        </div>
+                        <div className="aspect-ratio-info">
+                          <span className="aspect-ratio-label">
+                            {aspectRatioOptions[key as AspectRatioKey].label}
+                          </span>
+                          <span className="aspect-ratio-dimensions">
+                            {aspectRatioOptions[key as AspectRatioKey].width} ×{" "}
+                            {aspectRatioOptions[key as AspectRatioKey].height}
+                          </span>
+                        </div>
+                      </div>
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -216,6 +239,23 @@ const TransformationForm = ({
             )}
           </div>
         )}
+
+        <div className="media-uploader-field">
+          <CustomField
+            control={form.control}
+            name="publicId"
+            className="flex size-full flex-col"
+            render={({ field }) => (
+              <MediaUploader
+                onValueChange={field.onChange}
+                setImage={setImage}
+                publicId={field.value}
+                image={image}
+                type={type}
+              />
+            )}
+          />
+        </div>
 
         <div className="flex flex-col gap-4">
           <Button
