@@ -6,7 +6,8 @@ import Header from "@/components/shared/header";
 import TransformationForm from "@/components/shared/transformation-form";
 import { auth } from "@clerk/nextjs/server";
 
-const Page = async ({ params: { id } }: SearchParamProps) => {
+const Page = async ({ params }: SearchParamProps) => {
+  const { id } = await params;
   const { userId } = await auth();
 
   if (!userId) redirect("/sign-in");
