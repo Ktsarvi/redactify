@@ -433,6 +433,42 @@
   background-color: var(--color-purple-100);
 }
 
+/* Reusable red pill button */
+.btn-red-pill {
+  background-color: #dc2626; /* red-600 */
+  color: #ffffff;
+  border-radius: 9999px;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-red-pill:hover {
+  background-color: #ef4444; /* red-500 */
+}
+
+.btn-red-pill:disabled,
+.btn-red-pill[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Slightly squared red button */
+.btn-red {
+  background-color: #dc2626; /* red-600 */
+  color: #ffffff;
+  border-radius: 0.75rem; /* ~12px */
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-red:hover {
+  background-color: #ef4444; /* red-500 */
+}
+
+.btn-red:disabled,
+.btn-red[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* Enhanced Aspect Ratio Select Content Styling */
 .aspect-ratio-select-content {
   background: white;
@@ -1093,6 +1129,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0 0.5rem;
+  cursor: pointer;
 }
 
 .transformed-image {

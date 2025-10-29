@@ -8,12 +8,13 @@ import TransformedImage from "@/components/shared/transformed-image";
 import Header from "@/components/shared/header";
 import { DeleteConfirmation } from "@/components/shared/delete-confirmation";
 
-const ImageDetails = async ({ params: { id } }: SearchParamProps) => {
+const ImageDetails = async ({ params }: SearchParamProps) => {
+  const { id } = await params;
   const { userId } = await auth();
 
   const image = await getImageById(id);
 
-   return (
+  return (
     <>
       <Header title={image.title} />
 
@@ -84,7 +85,7 @@ const ImageDetails = async ({ params: { id } }: SearchParamProps) => {
 
         {userId === image.author.clerkId && (
           <div className="mt-4 space-y-4">
-            <Button asChild type="button" className="submit-button capitalize">
+            <Button asChild type="button" className="submit-button capitalize text-white">
               <Link href={`/transformations/${image._id}/update`}>
                 Update Image
               </Link>
@@ -99,4 +100,3 @@ const ImageDetails = async ({ params: { id } }: SearchParamProps) => {
 };
 
 export default ImageDetails;
-
