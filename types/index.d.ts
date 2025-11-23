@@ -1,5 +1,21 @@
 /* eslint-disable no-unused-vars */
 
+// ====== COMMON TYPES
+declare interface Author {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  clerkId?: string;
+}
+
+declare interface SearchResult {
+  _id: string;
+  title: string;
+  secureURL: string;
+  author: Author;
+  updatedAt: string;
+}
+
 // ====== USER PARAMS
 declare type CreateUserParams = {
   clerkId: string;

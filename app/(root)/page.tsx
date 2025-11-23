@@ -6,7 +6,12 @@ import Link from "next/link";
 import { Suspense } from "react";
 import CollectionLoading from "./loading";
 
-const Home = async ({ searchParams }: SearchParamProps) => {
+const Home = async ({
+  searchParams: searchParamsPromise,
+}: {
+  searchParams: Promise<{ page?: string; query?: string }>;
+}) => {
+  const searchParams = await searchParamsPromise;
   const page = Number(searchParams?.page) || 1;
   const searchQuery = (searchParams?.query as string) || "";
 

@@ -35,6 +35,7 @@ const MediaUploader = ({
     toast.success("Image uploaded successfully", {
       description: "1 credit was deducted from your balance",
       className: "success-toast",
+      duration: 5000,
     });
   };
 
@@ -42,6 +43,7 @@ const MediaUploader = ({
     toast.error("Something went wrong", {
       description: "Please try again",
       className: "error-toast",
+      duration: 5000,
     });
   };
 
