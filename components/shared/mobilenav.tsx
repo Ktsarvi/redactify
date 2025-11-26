@@ -20,7 +20,7 @@ const MobileNav = () => {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm h-16 flex items-center px-4">
+      <header className="md:hidden fixed top-0 left-0 right-0 z-50 bg-white shadow-sm h-16 flex items-center px-4">
         <Link href="/" className="flex items-center gap-2">
           <Image
             src="/assets/images/REDACTIFY.svg"
@@ -115,7 +115,7 @@ const MobileNav = () => {
           </SignedOut>
         </nav>
       </header>
-      <div className="h-16"></div>
+      <div className="h-16 md:hidden"></div>
     </>
   );
 };
