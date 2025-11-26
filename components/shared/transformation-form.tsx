@@ -135,7 +135,7 @@ const TransformationForm = ({
       }
     }
 
-    setIsSubmitting(false)
+    setIsSubmitting(false);
   }
 
   const onSelectFieldHandler = (
@@ -190,10 +190,10 @@ const TransformationForm = ({
   };
 
   useEffect(() => {
-    if(image && (type === 'restore' || type === 'removeBackground')) {
-      setNewTransformation(transformationType.config)
+    if (image && (type === "restore" || type === "removeBackground")) {
+      setNewTransformation(transformationType.config);
     }
-  }, [image, transformationType.config, type])
+  }, [image, transformationType.config, type]);
 
   return (
     <Form {...form}>
