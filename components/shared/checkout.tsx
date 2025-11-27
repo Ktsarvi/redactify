@@ -53,7 +53,12 @@ const Checkout = ({
   };
 
   return (
-    <form action={onCheckout} method="POST">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        onCheckout();
+      }}
+    >
       <section>
         <Button
           type="submit"
