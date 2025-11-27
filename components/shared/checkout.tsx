@@ -1,7 +1,7 @@
 "use client";
 
 import { loadStripe } from "@stripe/stripe-js";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { checkoutCredits } from "@/lib/actions/transaction.action";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
@@ -17,8 +17,6 @@ const Checkout = ({
   credits: number;
   buyerId: string;
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
-
   useEffect(() => {
     loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
   }, []);
@@ -43,37 +41,31 @@ const Checkout = ({
     }
   }, []);
 
-  const onCheckout = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onCheckout = async () => {
+    const transaction = {
+      plan,
+      amount,
+      credits,
+      buyerId,
+    };
 
-    try {
-      setIsLoading(true);
-      const transaction = {
-        plan,
-        amount,
-        credits,
-        buyerId,
-      };
-
-      await checkoutCredits(transaction);
-    } catch (error) {
-      console.error("Checkout failed:", error);
-      toast.error("Something went wrong. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
+    await checkoutCredits(transaction);
   };
 
   return (
-    <form onSubmit={onCheckout}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        onCheckout();
+      }}
+    >
       <section>
         <Button
           type="submit"
           role="link"
-          disabled={isLoading}
-          className="w-full rounded-full bg-purple-gradient bg-cover text-white hover:bg-purple-700"
+          className="w-full rounded-full bg-purple-gradient bg-cover text-white"
         >
-          {isLoading ? "Processing..." : "Buy Credit"}
+          Buy Credit
         </Button>
       </section>
     </form>

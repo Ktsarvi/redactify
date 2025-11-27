@@ -8,51 +8,33 @@ import Transaction from "../database/models/transaction.model";
 import { updateCredits } from "./user.actions";
 
 export async function checkoutCredits(transaction: CheckoutTransactionParams) {
-  try {
-    if (!process.env.STRIPE_SECRET_KEY) {
-      throw new Error("Stripe secret key is not configured");
-    }
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+  const amount = Number(transaction.amount) * 100;
 
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-    const amount = Number(transaction.amount) * 100;
-
-    if (isNaN(amount)) {
-      throw new Error("Invalid amount");
-    }
-
-    const session = await stripe.checkout.sessions.create({
-      line_items: [
-        {
-          price_data: {
-            currency: "usd",
-            unit_amount: amount,
-            product_data: {
-              name: transaction.plan,
-              description: `${transaction.credits} credits`,
-            },
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        price_data: {
+          currency: "usd",
+          unit_amount: amount,
+          product_data: {
+            name: transaction.plan,
           },
-          quantity: 1,
         },
-      ],
-      metadata: {
-        plan: transaction.plan,
-        credits: transaction.credits.toString(),
-        buyerId: transaction.buyerId,
+        quantity: 1,
       },
-      mode: "payment",
-      success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/profile?success=true`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/credits?canceled=true`,
-    });
+    ],
+    metadata: {
+      plan: transaction.plan,
+      credits: transaction.credits,
+      buyerId: transaction.buyerId,
+    },
+    mode: "payment",
+    success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/profile`,
+    cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/`,
+  });
 
-    if (!session.url) {
-      throw new Error("Failed to create checkout session");
-    }
-
-    return session.url;
-  } catch (error) {
-    console.error("Checkout error:", error);
-    throw new Error("Failed to process checkout. Please try again.");
-  }
+  redirect(session.url!);
 }
 
 export async function createTransaction(transaction: CreateTransactionParams) {
